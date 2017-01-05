@@ -12,8 +12,8 @@ indexed([Head|Tail], [(Index, Head)|IndexedTail], Index) :-
 puzzle2([(_, X)], X, []).
 puzzle2(List, X, [(FirstIndex, First, Second, Op)|S]) :-
     select(List, Before, (FirstIndex, First), (_, Second), After),
-    operation(Op),
-    perform_operation(Op, First, Second, OpResult),
+    operator(Op),
+    operation(Op, First, Second, OpResult),
     append(Before, [(FirstIndex, OpResult)|After], Next),
     puzzle2(Next, X, S).
 
@@ -21,15 +21,15 @@ puzzle2(List, X, [(FirstIndex, First, Second, Op)|S]) :-
 select(List, Before, First, Second, After) :-
     append(Before, [First, Second|After], List).
 
-operation(add).
-operation(subtract).
-operation(times).
-%operation(divide).
+operator(add).
+operator(subtract).
+operator(times).
+%operator(divide).
 
-perform_operation(add, X, Y, Z) :- Z is X + Y.
-perform_operation(subtract, X, Y, Z) :- Z is X - Y.
-perform_operation(times, X, Y, Z) :- Z is X * Y.
-%perform_operation(divide, X, Y, Z) :- Z is X + Y.
+operation(add, X, Y, Z) :- Z is X + Y.
+operation(subtract, X, Y, Z) :- Z is X - Y.
+operation(times, X, Y, Z) :- Z is X * Y.
+%operation(divide, X, Y, Z) :- Z is X + Y.
 
 :- puzzle([1], 1, _).
 :- puzzle([3, 2], 1, _).
