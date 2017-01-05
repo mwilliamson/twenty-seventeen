@@ -1,20 +1,15 @@
 puzzle(List, X, S) :-
-    indexed(List, IndexedList),
-    puzzle2(IndexedList, X, S).
+    maplist(number_ast, List, ListWithAst),
+    puzzle2(ListWithAst, X, S).
 
-indexed(List, IndexedList) :- indexed(List, IndexedList, 0).
+number_ast(X, (X,  X)).
 
-indexed([], [], _).
-indexed([Head|Tail], [(Index, Head)|IndexedTail], Index) :-
-    NextIndex is Index + 1,
-    indexed(Tail, IndexedTail, NextIndex).
-
-puzzle2([(_, X)], X, []).
-puzzle2(List, X, [(FirstIndex, First, Second, Op)|S]) :-
-    select(List, Before, (FirstIndex, First), (_, Second), After),
+puzzle2([(X, S)], X, S).
+puzzle2(List, X, S) :-
+    select(List, Before, (First, FirstAst), (Second, SecondAst), After),
     operator(Op),
     operation(Op, First, Second, OpResult),
-    append(Before, [(FirstIndex, OpResult)|After], Next),
+    append(Before, [(OpResult, (Op, FirstAst, SecondAst))|After], Next),
     puzzle2(Next, X, S).
 
 
